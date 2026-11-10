@@ -25,7 +25,15 @@ from app.api.v1.branches import router as branches_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+        try:
+            from app.seed import run_seed
+            run_seed()
+        except Exception as se:
+            print(f"Auto-seed status: {se}")
+    except Exception as e:
+        print(f"Database initialization warning: {e}")
     yield
 
 app = FastAPI(
