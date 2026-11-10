@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #050914;
+    color: #CBD5E1;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    antialiased: true;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Seamless Tejas Logo Merge */
+.tejas-logo-merged {
+  mix-blend-mode: screen;
+  filter: contrast(1.15) brightness(1.08);
+}
+
+/* Ambient glow backgrounds */
+.bg-mesh-dark {
+  background-color: #050914;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(245, 181, 68, 0.08) 0px, transparent 50%),
+    radial-gradient(at 85% 20%, rgba(56, 189, 248, 0.12) 0px, transparent 55%),
+    radial-gradient(at 50% 80%, rgba(37, 99, 235, 0.08) 0px, transparent 50%);
+}
+
+.border-enterprise {
+  border-color: #273449;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050914;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #273449;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #38BDF8;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

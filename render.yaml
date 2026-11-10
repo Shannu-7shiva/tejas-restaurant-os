@@ -1,0 +1,28 @@
+services:
+  # ── Backend Web Service (FastAPI) ──────────────────────────────────
+  - type: web
+    name: tejas-restaurant-os-backend
+    runtime: python
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: ENVIRONMENT
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: tejas-restaurant-db
+          property: connectionString
+
+databases:
+  # ── Free PostgreSQL Database ──────────────────────────────────────
+  - name: tejas-restaurant-db
+    region: oregon
+    plan: free
+

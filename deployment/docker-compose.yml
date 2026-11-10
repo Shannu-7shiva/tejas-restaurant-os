@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: aurelia_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: aurelia_os
+      POSTGRES_USER: aurelia_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme_secure_db_pass_2026}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aurelia_user -d aurelia_os"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: aurelia_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://aurelia_user:${DB_PASSWORD:-changeme_secure_db_pass_2026}@db:5432/aurelia_os
+      SECRET_KEY: ${SECRET_KEY:-changeme_jwt_production_secret_key_xyz987}
+      ENVIRONMENT: production
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: aurelia_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:
