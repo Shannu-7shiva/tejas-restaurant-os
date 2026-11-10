@@ -66,6 +66,16 @@ app.include_router(super_admin_router, prefix=settings.API_V1_STR)
 app.include_router(subscription_router, prefix=settings.API_V1_STR)
 app.include_router(branches_router, prefix=settings.API_V1_STR)
 
+@app.get("/")
+@app.head("/")
+def root_health():
+    return {
+        "status": "online",
+        "service": "TEJAS RESTAURANT OS",
+        "version": "2.0.0",
+        "platform": "TEJAS TECHNOLOGIES"
+    }
+
 @app.get("/api/health")
 def health_check():
     return {
